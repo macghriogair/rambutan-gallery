@@ -37,6 +37,7 @@ class CreatePhotosTable extends Migration
             $table->string('focal', '20');
             $table->string('takestamp', '12');*/
 
+            $table->text('tags')->nullable();
             $table->integer('album_id')->unsigned()->nullable();
             $table->char('checksum', 40)->nullable();
             $table->timestamps();
