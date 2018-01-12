@@ -3,6 +3,7 @@
 namespace App\Exceptions;
 
 use Exception;
+use Psr\Log\LoggerInterface;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 
 class Handler extends ExceptionHandler
@@ -36,7 +37,21 @@ class Handler extends ExceptionHandler
      */
     public function report(Exception $exception)
     {
-        parent::report($exception);
+        if ($this->shouldntReport($exception)) {
+            return;
+        }
+
+        if (method_exists($exception, 'report')) {
+            return $exception->report();
+        }
+
+        try {
+            $logger = $this->container->make(LoggerInterface::class);
+        } catch (Exception $ex) {
+            throw $exception; // throw the original exception
+        }
+        $msg = $this->toReadableException($exception);
+        $logger->error($msg, $this->context());
     }
 
     /**
@@ -49,5 +64,23 @@ class Handler extends ExceptionHandler
     public function render($request, Exception $exception)
     {
         return parent::render($request, $exception);
+    }
+
+    /**
+     * Apply our custom formatting for log entries.
+     *
+     * @param  Exception $e
+     * @return string
+     */
+    protected function toReadableException(Exception $e) : string
+    {
+        return sprintf(
+            "%s [%s] with Message \"%s\", in %s at line %s",
+            get_class($e),
+            $e->getCode(),
+            $e->getMessage(),
+            $e->getFile(),
+            $e->getLine()
+        );
     }
 }

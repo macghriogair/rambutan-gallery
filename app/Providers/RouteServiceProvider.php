@@ -23,9 +23,14 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
-
         parent::boot();
+
+        Route::bind('albumId', function ($value) {
+            return new \App\Rambutan\Album\AlbumId($value);
+        });
+        Route::bind('photoId', function ($value) {
+            return new \App\Rambutan\Photo\PhotoId($value);
+        });
     }
 
     /**
@@ -67,7 +72,7 @@ class RouteServiceProvider extends ServiceProvider
     {
         Route::prefix('api')
              ->middleware('api')
-             ->namespace($this->namespace)
+             ->namespace($this->namespace . '\Api')
              ->group(base_path('routes/api.php'));
     }
 }
