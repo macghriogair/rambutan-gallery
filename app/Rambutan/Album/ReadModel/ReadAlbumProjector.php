@@ -12,6 +12,7 @@ use App\Rambutan\Album\AlbumId;
 use App\Rambutan\Album\Events\AlbumWasAdded;
 use App\Rambutan\Album\Events\AlbumWasDeleted;
 use App\Rambutan\Album\ReadModel\ReadAlbum;
+use App\Rambutan\Photo\Events\PhotoWasAdded;
 use App\Rambutan\Photo\Events\PhotoWasAddedToAlbum;
 use App\Rambutan\Photo\Events\PhotoWasDeleted;
 use Broadway\ReadModel\Projector;
@@ -32,6 +33,17 @@ class ReadAlbumProjector extends Projector
     {
         $album = $this->getReadModel($event->getAlbumId());
         $album->delete();
+    }
+
+    public function applyPhotoWasAdded(PhotoWasAdded $event)
+    {
+        if (! $albumId = $event->getAlbumId()) {
+            return;
+        }
+
+        $album = $this->getReadModel($albumId);
+        $album->photo_count++;
+        $album->save();
     }
 
     public function applyPhotoWasAddedToAlbum(PhotoWasAddedToAlbum $event)

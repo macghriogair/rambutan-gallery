@@ -31,6 +31,7 @@ class PhotoCommandHandler extends SimpleCommandHandler
 
         $photo = Photo::addPhoto(
             $command->getPhotoId(),
+            $command->getAlbumId(),
             $command->getName(),
             $command->getDescription()
         );

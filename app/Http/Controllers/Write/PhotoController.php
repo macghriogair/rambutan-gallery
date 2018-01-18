@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Write;
 
 use App\Http\Controllers\StorageAwareController;
 use App\Rambutan\Album\AlbumId;
@@ -17,21 +17,24 @@ class PhotoController extends StorageAwareController
     public function store(Request $request)
     {
         $input = $request->validate([
-            // 'file' => 'required|mimes:jpeg,bmp,png',
+            'file' => 'string|required',
             'name' => 'string|max:100',
-            'description' => 'sometimes'
+            'description' => 'string|sometimes|max:500',
+            'album_id' => 'string|sometimes'
         ]);
 
         // Validate input
         // Store File...
-        // Generate ID
+
         $photoId = new PhotoId($this->uuidGenerator->generate());
+
         // Get Command Instance
         $command = new AddPhoto([
             'photoId' => $photoId,
+            'albumId' => isset($input['album_id']) ? new AlbumId($input['album_id']) : null,
             // 'file' => $input['file'],
             'name' => $input['name'],
-            'description' => $input['description']
+            'description' => isset($input['description']) ? $input['description'] : null,
         ]);
 
         // Dispatch command to Bus

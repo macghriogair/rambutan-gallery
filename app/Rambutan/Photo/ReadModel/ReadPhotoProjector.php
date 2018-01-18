@@ -20,6 +20,9 @@ class ReadPhotoProjector extends Projector
     protected function applyPhotoWasAdded(PhotoWasAdded $event)
     {
         $photo = new ReadPhoto();
+        if ($event->getAlbumId()) {
+            $photo->album_id = $event->getAlbumId();
+        }
         $photo->uuid = (string) $event->getPhotoId();
         $photo->name = $event->getName();
         $photo->description = $event->getDescription();

@@ -18,26 +18,39 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 // Read
-Route::get('albums', 'ReadAlbumController@index');
-Route::get('albums/{readAlbum}', 'ReadAlbumController@show');
+Route::group([
+    'namespace' => 'Read'
+], function() {
+    Route::get('albums', 'AlbumController@index');
+    Route::get('albums/{readAlbum}', 'AlbumController@show');
+    Route::get('albums/{readAlbum}/photos', 'AlbumPhotoController@photosByAlbum');
 
-Route::get('photos', 'ReadPhotoController@index');
-Route::get('photos/{readPhoto}', 'ReadPhotoController@show');
+    Route::get('photos', 'PhotoController@index');
+    Route::get('photos/{readPhoto}', 'PhotoController@show');
+});
 
-// Write
-Route::post('albums', 'AlbumController@store')
-    ->name('album.add');
-Route::delete('album/{albumId}', 'AlbumController@destroy')
-    ->name('album.destroy');
+Route::group([
+    'namespace' => 'Write'
+], function() {
+    // Write
+    Route::post('albums', 'AlbumController@store')
+        ->name('album.add');
+    Route::delete('album/{albumId}', 'AlbumController@destroy')
+        ->name('album.destroy');
 
-Route::post('photos', 'PhotoController@store')
-    ->name('photo.add');
-Route::patch('photos/{photoId}/tag', 'PhotoController@tagPhoto')
-    ->name('photo.tag');
-Route::patch('photos/{photoId}/untag', 'PhotoController@untagPhoto')
-    ->name('photo.untag');
-Route::patch('photos/{photoId}/album', 'PhotoController@addToAlbum')
-        ->name('photo.addToAlbum');
-Route::delete('photos/{photoId}', 'PhotoController@destroy')
-    ->name('photo.destroy');
+    Route::post('photos', 'PhotoController@store')
+        ->name('photo.add');
+    Route::patch('photos/{photoId}/tag', 'PhotoController@tagPhoto')
+        ->name('photo.tag');
+    Route::patch('photos/{photoId}/untag', 'PhotoController@untagPhoto')
+        ->name('photo.untag');
+    Route::patch('photos/{photoId}/album', 'PhotoController@addToAlbum')
+            ->name('photo.addToAlbum');
+    Route::delete('photos/{photoId}', 'PhotoController@destroy')
+        ->name('photo.destroy');
+
+    Route::post('upload/{mediaType}', 'UploadController@store');
+});
+
+
 

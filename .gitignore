@@ -13,3 +13,7 @@ yarn-error.log
 *.sublime-project
 *.sublime-workspace
 \.vscode/
+
+public/js
+public/mix-manifest\.json
+public/css

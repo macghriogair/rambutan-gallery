@@ -10,6 +10,11 @@ namespace App\Rambutan\Photo\Commands;
 
 class AddPhoto extends PhotoCommand
 {
+    public function getAlbumId()
+    {
+        return $this->payload()['albumId'];
+    }
+
     /**
      * @return mixed
      */

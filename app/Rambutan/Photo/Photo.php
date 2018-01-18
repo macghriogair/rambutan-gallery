@@ -33,10 +33,14 @@ class Photo extends EventSourcedAggregateRoot
         return $this->id;
     }
 
-    public static function addPhoto(PhotoId $photoId, $name, $description)
-    {
+    public static function addPhoto(
+        PhotoId $photoId,
+        AlbumId $albumId = null,
+        $name = null,
+        $description = null
+    ) {
         $photo = new self();
-        $photo->apply(new PhotoWasAdded($photoId, $name, $description));
+        $photo->apply(new PhotoWasAdded($photoId, $albumId, $name, $description));
 
         return $photo;
     }
@@ -44,6 +48,7 @@ class Photo extends EventSourcedAggregateRoot
     protected function applyPhotoWasAdded(PhotoWasAdded $event)
     {
         $this->id = $event->getPhotoId();
+        $this->albumId = $event->getAlbumId();
         $this->name = $event->getName();
         $this->description = $event->getDescription();
         $this->metadata = new ImageMetadata(); // TODO

@@ -8,20 +8,24 @@
 
 namespace App\Rambutan\Photo\Events;
 
+use App\Rambutan\Album\AlbumId;
 use App\Rambutan\Photo\PhotoId;
 
 class PhotoWasAdded extends PhotoEvent
 {
+    private $albumId;
     private $name;
     private $description;
 
     public function __construct(
         PhotoId $photoId,
+        AlbumId $albumId = null,
         string $name = null,
         string $description = null
     ) {
         parent::__construct($photoId);
 
+        $this->albumId = $albumId;
         $this->name = $name;
         $this->description = $description;
     }
@@ -32,6 +36,7 @@ class PhotoWasAdded extends PhotoEvent
     public function serialize() : array
     {
         return array_merge(parent::serialize(), [
+            'albumId' => is_null($this->albumId) ? null : (string) $this->albumId,
             'name' => $this->name,
             'description' => $this->description
         ]);
@@ -44,6 +49,7 @@ class PhotoWasAdded extends PhotoEvent
     {
         return new self(
             new PhotoId($data['photoId']),
+            is_null($data['albumId']) ? null : new AlbumId($data['albumId']),
             $data['name'],
             $data['description']
         );
@@ -63,5 +69,13 @@ class PhotoWasAdded extends PhotoEvent
     public function getDescription()
     {
         return $this->description;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAlbumId()
+    {
+        return $this->albumId;
     }
 }

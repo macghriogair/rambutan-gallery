@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Read;
 
 use App\Http\Controllers\Controller;
 use App\Rambutan\Photo\ReadModel\ReadPhoto;
 
-class ReadPhotoController extends Controller
+class PhotoController extends Controller
 {
     public function index()
     {

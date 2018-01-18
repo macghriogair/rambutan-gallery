@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Read;
 
 use App\Http\Controllers\Controller;
 use App\Rambutan\Album\ReadModel\ReadAlbum;
 
-class ReadAlbumController extends Controller
+class AlbumController extends Controller
 {
     public function index()
     {
