@@ -24,10 +24,32 @@ const mutations = {
   setPhotos: (state, payload) => {
     state.photos = payload
   },
+  updatePhoto: (state, payload) => {
+    let photo = state.photos.find(el => el.id === payload.id)
+    if (photo) {
+      for (let field in payload) {
+        photo[field] = payload[field]
+      }
+    } else {
+      state.photos.push(payload)
+    }
+  },
+  updateAlbum: (state, payload) => {
+    let album = state.data.find(el => el.id === payload.id)
+    if (album) {
+      for (let field in payload) {
+        album[field] = payload[field]
+      }
+    } else {
+      state.data.push(payload)
+    }
+  }
 }
 
 const actions = {
   ...baseActions,
+
+
   fetchPhotos({commit, state}, { albumId }) {
     commit('setLoading', true)
     axios.get(`${state.resourceUrl}/${albumId}/photos`)

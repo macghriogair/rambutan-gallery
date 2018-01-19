@@ -14,7 +14,8 @@
     <link href="{{ mix('css/app.css') }}" rel="stylesheet">
     <script>
         window.Laravel = {!! json_encode([
-                'csrf_token' => csrf_token()
+                'csrf_token' => csrf_token(),
+                'socketio' => config('broadcasting.socketio')
             ]) !!};
     </script>
 </head>

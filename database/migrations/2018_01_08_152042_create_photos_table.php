@@ -40,11 +40,6 @@ class CreatePhotosTable extends Migration
             $table->char('album_id', 36)->nullable();
             $table->char('checksum', 40)->nullable();
             $table->timestamps();
-
-            $table->foreign('album_id')
-                ->references('id')
-                ->on('albums')
-                ->onDelete('cascade');
         });
     }
 

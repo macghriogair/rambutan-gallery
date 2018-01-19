@@ -67,7 +67,7 @@
       onShowPicker() {
         this.$refs.fileInput.click()
       },
-      onFileChange() {
+      onFileChange(event) {
         console.log('I got the file')
         const files = event.target.files
         if (!files.length) {

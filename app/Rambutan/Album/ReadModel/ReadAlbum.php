@@ -20,6 +20,16 @@ class ReadAlbum extends Model
         'tags' => 'array'
     ];
 
+    /**
+     * The event map for the model.
+     *
+     * @var array
+     */
+    protected $dispatchesEvents = [
+        'saved' => \App\Events\ReadAlbumChanged::class,
+        // 'deleted' => Events\ModelDeleted::class
+    ];
+
     public static function byUuid(AlbumId $albumId)
     {
         return self::where('uuid', (string) $albumId)->first();

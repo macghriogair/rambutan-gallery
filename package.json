@@ -18,5 +18,8 @@
         "vue-router": "^3.0.1",
         "vuetify": "^0.17.6",
         "vuex": "^3.0.1"
+    },
+    "dependencies": {
+        "socket.io": "^2.0.4"
     }
 }

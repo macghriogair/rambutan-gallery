@@ -20,6 +20,16 @@ class ReadPhoto extends Model
         'tags' => 'array'
     ];
 
+    /**
+     * The event map for the model.
+     *
+     * @var array
+     */
+    protected $dispatchesEvents = [
+        'saved' => \App\Events\ReadPhotoChanged::class,
+        // 'deleted' => Events\ModelDeleted::class
+    ];
+
     public static function byUuid(PhotoId $photoId)
     {
         return self::where('uuid', (string) $photoId)->first();

@@ -58,7 +58,7 @@ export const actions = {
     return new Promise((resolve, reject) => {
       axios.put(`${state.resourceUrl}/${payload.id}`, payload)
         .then((response) => {
-          commit('update', response.data.data)
+          //commit('update', response.data.data)
           window.Bus.$emit('ajax-success', {text: 'Entry updated successfully!'})
           resolve(response)
         })
@@ -75,7 +75,7 @@ export const actions = {
       axios.post(state.resourceUrl, payload)
         .then((response) => {
           console.log(response)
-          commit('addElement', response.data.data)
+          // commit('addElement', response.data.data)
           window.Bus.$emit('ajax-success', {text: 'Entry added successfully!'})
           resolve(response)
         })
@@ -91,7 +91,7 @@ export const actions = {
     axios.delete(`${state.resourceUrl}/${elementId}`)
       .then((response) => {
         console.log(response)
-        commit('removeElement', elementId)
+        //commit('removeElement', elementId)
         window.Bus.$emit('ajax-success', {text: 'Entry deleted successfully!'})
       })
       .catch((e) => {

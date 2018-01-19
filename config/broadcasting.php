@@ -15,7 +15,7 @@ return [
     |
     */
 
-    'default' => env('BROADCAST_DRIVER', 'null'),
+    'default' => env('BROADCAST_DRIVER', 'redis'),
 
     /*
     |--------------------------------------------------------------------------
@@ -55,5 +55,7 @@ return [
         ],
 
     ],
+
+    'socketio' => env('SOCKET_HOST', 'localhost') . ':' . env('SOCKET_PORT', 3000)
 
 ];

@@ -53,6 +53,23 @@
         sideNav: false
       }
     },
+    methods: {
+      listen() {
+
+        window.socket.on(
+          'test-channel:App\\Events\\ReadPhotoChanged',
+          (message) => {
+            console.log('I received a Broadcast for Photo:', message)
+            this.$store.commit('albums/updatePhoto', message.photo)
+          })
+
+        window.socket.on('test-channel:App\\Events\\ReadAlbumChanged',
+          (message) => {
+            console.log('I received a Broadcast for Album:', message)
+            this.$store.commit('albums/updateAlbum', message.album)
+          })
+      }
+    },
     mounted() {
       window.Bus.$on('ajax-error', (event) => {
         this.$refs.notification.success = false
@@ -66,6 +83,8 @@
       })
 
       this.$store.dispatch('albums/fetch')
+
+      this.listen()
     }
   }
 </script>
