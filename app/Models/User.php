@@ -40,15 +40,15 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
-    public function favorites()
-    {
-        return $this->belongsToMany(
-            Photo::class,
-            'favorites',
-            'user_id',
-            'photo_id'
-        );
-    }
+    // public function favorites()
+    // {
+    //     return $this->belongsToMany(
+    //         Photo::class,
+    //         'favorites',
+    //         'user_id',
+    //         'photo_id'
+    //     );
+    // }
 
     public function isAdmin() : bool
     {

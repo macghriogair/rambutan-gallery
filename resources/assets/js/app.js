@@ -1,22 +1,41 @@
-
 /**
- * First we will load all of this project's JavaScript dependencies which
- * includes Vue and other libraries. It is a great starting point when
- * building robust, powerful web applications using Vue and Laravel.
+ * This file loads the Vue App
+ * We use vuetify, vue-router, vuex and axios
  */
 
-require('./bootstrap');
+require('./bootstrap')
+require('vuetify/dist/vuetify.min.css')
 
-window.Vue = require('vue');
+window.axios = require('axios')
+// Global axios headers
+window.axios.defaults.headers.common['X-CSRF-TOKEN'] = window.Laravel.csrfToken
+window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest'
 
-/**
- * Next, we will create a fresh Vue application instance and attach it to
- * the page. Then, you may begin adding components to this application
- * or customize the JavaScript scaffolding to fit your unique needs.
- */
+import Vue from 'vue'
+import Vuetify from 'vuetify'
+import router from './router'
+import { store } from './store'
+import App from '@components/App'
 
-Vue.component('example-component', require('./components/ExampleComponent.vue'));
+// Event Bus
+window.Bus = new Vue()
 
-const app = new Vue({
-    el: '#app'
-});
+Vue.use(Vuetify)
+
+Vue.config.productionTip = false
+if ('production' === process.env.MIX_APP_ENV) {
+  Vue.config.devtools = false
+  Vue.config.debug = false
+  Vue.config.silent = true
+}
+
+/* eslint-disable no-new */
+new Vue({
+  el: '#app',
+  router,
+  store,
+  render: h => h(App),
+  created() {
+    console.debug('APP created')
+  }
+})

@@ -15,10 +15,13 @@ class CreateAlbumsTable extends Migration
     {
         Schema::create('albums', function (Blueprint $table) {
             $table->increments('id');
+            $table->char('uuid', 36)->unique();
             $table->string('name')->default('');
             $table->text('description')->nullable();
             $table->boolean('is_public')->default(false);
             $table->boolean('is_computed')->default(false);
+            $table->integer('photo_count')->unsigned()->default(0);
+
             // visible
             // downloadable
             // password
