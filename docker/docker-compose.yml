@@ -167,6 +167,8 @@ services:
         build: ./socketio
         volumes:
           - ../socket/app.js:/srv/app.js
+        ports:
+          - "3000:3000"
         networks:
           - backend
           - frontend
