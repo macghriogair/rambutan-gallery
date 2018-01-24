@@ -63,6 +63,23 @@ const actions = {
       })
   },
 
+  describePhoto({commit}, payload) {
+    let updateObj = {}
+    if (payload.description) {
+      updateObj.description = payload.description
+    }
+
+    axios.patch(`api/photos/${payload.id}/describe`, updateObj)
+      .then(() => {
+        commit('setLoading', false)
+      })
+      .catch(e => {
+        console.error(e)
+        commit('setLoading', false)
+      })
+
+  },
+
   storePhoto({commit, state, getters}, payload) {
     let createObj = {}
     if (payload.albumId) {

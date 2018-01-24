@@ -37,11 +37,12 @@ class PhotoCommandHandlerTest extends CommandHandlerScenarioTestCase
             ->given([])
             ->when(new Commands\AddPhoto([
                 'photoId' => $photoId,
+                'albumId' => null,
                 'name' => 'First Photo',
                 'description' => 'Lorem ipsum'
             ]))
             ->then([
-                new Events\PhotoWasAdded($photoId, 'First Photo', 'Lorem ipsum')
+                new Events\PhotoWasAdded($photoId, null, 'First Photo', 'Lorem ipsum')
             ]);
     }
 
@@ -52,7 +53,7 @@ class PhotoCommandHandlerTest extends CommandHandlerScenarioTestCase
         $this->scenario
             ->withAggregateId($photoId)
             ->given([
-                new Events\PhotoWasAdded($photoId, 'First Photo', 'Lorem ipsum')
+                new Events\PhotoWasAdded($photoId, null, 'First Photo', 'Lorem ipsum')
             ])
             ->when(new Commands\TagPhoto(['photoId' => $photoId, 'tag' => 'Berlin']))
             ->then([
@@ -67,7 +68,7 @@ class PhotoCommandHandlerTest extends CommandHandlerScenarioTestCase
         $this->scenario
             ->withAggregateId($photoId)
             ->given([
-                new Events\PhotoWasAdded($photoId, 'First Photo', 'Lorem ipsum'),
+                new Events\PhotoWasAdded($photoId, null, 'First Photo', 'Lorem ipsum'),
                 new Events\PhotoWasTagged($photoId, 'Berlin')
             ])
             ->when(new Commands\UntagPhoto(['photoId' => $photoId, 'tag' => 'Berlin']))
@@ -88,7 +89,7 @@ class PhotoCommandHandlerTest extends CommandHandlerScenarioTestCase
         $this->scenario
             ->withAggregateId($photoId)
             ->given([
-                new Events\PhotoWasAdded($photoId, 'First Photo', 'Lorem ipsum')
+                new Events\PhotoWasAdded($photoId, null, 'First Photo', 'Lorem ipsum')
             ])
             ->when(new Commands\DeletePhoto(['photoId' => $photoId]))
             ->then([
@@ -105,7 +106,7 @@ class PhotoCommandHandlerTest extends CommandHandlerScenarioTestCase
         $this->scenario
             ->withAggregateId($photoId)
             ->given([
-                new Events\PhotoWasAdded($photoId, 'First Photo', 'Lorem ipsum'),
+                new Events\PhotoWasAdded($photoId, null, 'First Photo', 'Lorem ipsum'),
                 new AlbumWasAdded($albumId, 'First Album', 'Lorem ipsum')
             ])
             ->when(new Commands\AddPhotoToAlbum([
@@ -115,5 +116,24 @@ class PhotoCommandHandlerTest extends CommandHandlerScenarioTestCase
             ->then([
                 new Events\PhotoWasAddedToAlbum($photoId, $albumId)
             ]);
+    }
+
+    /** @test */
+    public function testDescribePhoto()
+    {
+        $photoId = new PhotoId('00000000-0000-0000-0000-000000000000');
+
+        $this->scenario
+            ->withAggregateId($photoId)
+            ->given([new Events\PhotoWasAdded($photoId, null, 'First Photo', 'Lorem ipsum')])
+            ->when(new Commands\DescribePhoto([
+                'photoId' => $photoId,
+                'description' => 'The new description'
+            ]))
+            ->then(
+                [
+                    new Events\PhotoWasDescribed($photoId, 'The new description')
+                ]
+            );
     }
 }

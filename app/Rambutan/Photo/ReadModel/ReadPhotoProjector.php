@@ -10,6 +10,7 @@ namespace App\Rambutan\Photo\ReadModel;
 
 use App\Rambutan\Photo\Events\PhotoWasAdded;
 use App\Rambutan\Photo\Events\PhotoWasAddedToAlbum;
+use App\Rambutan\Photo\Events\PhotoWasDescribed;
 use App\Rambutan\Photo\Events\PhotoWasTagged;
 use App\Rambutan\Photo\Events\PhotoWasUntagged;
 use App\Rambutan\Photo\PhotoId;
@@ -54,13 +55,21 @@ class ReadPhotoProjector extends Projector
         $photo->save();
     }
 
-    public function applyPhotoWasDeleted(PhotoWasDeleted $event)
+    protected function applyPhotoWasDescribed(PhotoWasDescribed $event)
+    {
+        $photo = $this->getReadModel($event->getPhotoId());
+        $photo->description = $event->getDescription();
+
+        $photo->save();
+    }
+
+    protected function applyPhotoWasDeleted(PhotoWasDeleted $event)
     {
         $photo = $this->getReadModel($event->getPhotoId());
         $photo->delete();
     }
 
-    public function applyPhotoWasAddedToAlbum(PhotoWasAddedToAlbum $event)
+    protected function applyPhotoWasAddedToAlbum(PhotoWasAddedToAlbum $event)
     {
         $photo = $this->getReadModel($event->getPhotoId());
         $photo->album_id = (string) $event->getAlbumId();

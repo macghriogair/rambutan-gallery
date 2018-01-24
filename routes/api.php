@@ -44,6 +44,8 @@ Route::group([
         ->name('photo.tag');
     Route::patch('photos/{photoId}/untag', 'PhotoController@untagPhoto')
         ->name('photo.untag');
+    Route::patch('photos/{photoId}/describe', 'PhotoController@describePhoto')
+        ->name('photo.describe');
     Route::patch('photos/{photoId}/album', 'PhotoController@addToAlbum')
             ->name('photo.addToAlbum');
     Route::delete('photos/{photoId}', 'PhotoController@destroy')

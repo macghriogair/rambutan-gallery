@@ -7,6 +7,7 @@ use App\Rambutan\Album\AlbumId;
 use App\Rambutan\Photo\Commands\AddPhoto;
 use App\Rambutan\Photo\Commands\AddPhotoToAlbum;
 use App\Rambutan\Photo\Commands\DeletePhoto;
+use App\Rambutan\Photo\Commands\DescribePhoto;
 use App\Rambutan\Photo\Commands\TagPhoto;
 use App\Rambutan\Photo\Commands\UntagPhoto;
 use App\Rambutan\Photo\PhotoId;
@@ -75,6 +76,24 @@ class PhotoController extends StorageAwareController
         ]);
         // Dispatch command to Bus
         $this->commandBus->dispatch($command);
+
+        return response()->json([
+            'success' => true
+        ]);
+    }
+
+    public function describePhoto(PhotoId $photoId, Request $request)
+    {
+        $input = $request->validate([
+            'description' => 'required|string|max:100'
+        ]);
+
+        $this->commandBus->dispatch(
+            new DescribePhoto([
+                'photoId' => $photoId,
+                'description' => $input['description'
+            ]])
+        );
 
         return response()->json([
             'success' => true

@@ -12,11 +12,12 @@ use App\Rambutan\Album\AlbumId;
 use App\Rambutan\Photo\Events\PhotoWasAdded;
 use App\Rambutan\Photo\Events\PhotoWasAddedToAlbum;
 use App\Rambutan\Photo\Events\PhotoWasDeleted;
+use App\Rambutan\Photo\Events\PhotoWasDescribed;
 use App\Rambutan\Photo\Events\PhotoWasTagged;
 use App\Rambutan\Photo\Events\PhotoWasUntagged;
 use Broadway\EventSourcing\EventSourcedAggregateRoot;
-use Carbon\Carbon;
 use Broadway\EventSourcing\SimpleEventSourcedEntity;
+use Carbon\Carbon;
 
 class Photo extends EventSourcedAggregateRoot
 {
@@ -107,6 +108,11 @@ class Photo extends EventSourcedAggregateRoot
         $this->apply(
             new PhotoWasAddedToAlbum($this->id, $albumId, $this->albumId)
         );
+    }
+
+    public function describe(string $description)
+    {
+        $this->apply(new PhotoWasDescribed($this->id, $description));
     }
 
     protected function applyPhotoWasAddedToAlbum(PhotoWasAddedToAlbum $event)
